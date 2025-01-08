@@ -1,0 +1,207 @@
+h1 {
+    font-size: 35px !important; 
+    color: #333;
+}
+
+.login-rectangle {
+    width: 800px; 
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: auto;
+}
+
+.login-header {
+    background-color: #e1eacd; 
+    color: #333;
+    text-align: left;
+    font-weight: bold;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.login-header h3 {
+    margin: 0;
+}
+
+.login-header i {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.login-body {
+    padding: 20px;
+    text-align: left;
+}
+
+.login-body .form-label {
+    font-weight: bold;
+}
+
+.login-body .btn-lg {
+    background-color: #007bff;
+    border: none;
+    width: 100%; 
+}
+
+.login-body .btn-lg:hover {
+    background-color: #0056b3;
+}
+
+/* Homepae */
+/* Reset Default Margins and Padding */
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+/* Navigation Bar Styling */
+.navbar {
+    background-color: #bfacd9;
+    padding: 10px 15px;
+}
+
+.navbar-brand {
+    color: #fff;
+    font-weight: bold;
+}
+
+.navbar-brand:hover {
+    color: #e0e0e0;
+}
+
+.navbar-nav .nav-link {
+    color: #fff !important;
+    font-weight: bold;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #000 !important;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 5px;
+}
+
+/* Welcome Text */
+.welcome-text {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Logout Button */
+#logoutButton {
+    color: #fff;
+    border-color: #fff;
+}
+
+#logoutButton:hover {
+    background-color: #fff;
+    color: #bfacd9;
+    border-color: #bfacd9;
+}
+
+/* Delivery Stats Boxes */
+.delivery-box {
+    background-color: #bad8b6;
+    width: 80%;
+    height: 200px;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.delivery-box .title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.delivery-box .value {
+    font-size: 36px;
+    font-weight: bold;
+    color: #555;
+    margin: 0;
+}
+
+/* Date-Time Rectangle */
+.date-time-rectangle {
+    width: 75%;
+    height: 600px;
+    background-color: #e1eacd;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.date-time-rectangle .day {
+    font-size: 36px;
+    font-weight: bold;
+    color: #333;
+    margin: 0;
+}
+
+.date-time-rectangle .date {
+    font-size: 28px;
+    font-weight: 600;
+    color: #555;
+    margin: 10px 0;
+}
+
+.date-time-rectangle .time {
+    font-size: 24px;
+    font-weight: normal;
+    color: #777;
+    margin: 0;
+}
+
+/* Footer Styling */
+.footer {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    background-color: #f8f9fa;
+    color: #6c757d;
+    text-align: center;
+    padding: 10px 0;
+}
+
+/* Responsive Behavior for Date-Time Rectangle */
+@media (max-width: 991.98px) {
+    /* Show date-time rectangle in navbar */
+    #dateTimeInNav {
+        display: block !important;
+    }
+
+    /* Hide date-time rectangle in main content */
+    .col-md-4.d-none.d-lg-flex {
+        display: none !important;
+    }
+
+    /* Adjust date-time rectangle styling */
+    .date-time-rectangle {
+        width: 100%;
+        height: auto;
+        margin: 10px auto;
+    }
+}
+
+/* Delivery List */
+.btn-success {
+    background-color:   #bad8b6 !important;
+    color: black !important;
+}
