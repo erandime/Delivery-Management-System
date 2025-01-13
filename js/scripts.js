@@ -1,6 +1,4 @@
 $(document).ready(function () {
-    const username = "JohnDoe";
-    $("#username").text(username);
 
     // Function to get the ordinal suffix for the date
     function getOrdinalSuffix(date) {
@@ -45,126 +43,112 @@ $(document).ready(function () {
     ];
 
     // Available drivers
-    const drivers = [
-        { id: "D001", name: "Alice Smith", contact: "555-5678" },
-        { id: "D002", name: "John Doe", contact: "555-1234" },
-        { id: "D003", name: "Charlie Brown", contact: "555-7890" },
-    ];
+//    const drivers = [
+//        { id: "D001", name: "Alice Smith", contact: "555-5678" },
+//        { id: "D002", name: "John Doe", contact: "555-1234" },
+//        { id: "D003", name: "Charlie Brown", contact: "555-7890" },
+//    ];
+//
+//    const $tableBody = $("#deliveryListTableBody");
+//
+//    function renderTable(data) {
+//        $tableBody.empty();
+//        data.forEach((delivery) => {
+//            const driverOptions = drivers
+//                .map((driver) =>
+//                    driver.id === delivery.driverId
+//                        ? `<option value="${driver.id}" selected>${driver.id}</option>`
+//                        : `<option value="${driver.id}">${driver.id}</option>`
+//                )
+//                .join("");
+//
+//            const row = `
+//                <tr>
+//                    <td>${delivery.deliveryId}</td>
+//                    <td>${delivery.address}</td>
+//                    <td>${delivery.status}</td>
+//                    <td>${delivery.schedule}</td>
+//                    <td>
+//                        <select class="form-select form-select-sm driver-select" data-delivery-id="${delivery.deliveryId}">
+//                            <option value="">Select Driver</option>
+//                            ${driverOptions}
+//                        </select>
+//                    </td>
+//                    <td>${delivery.driverName || "N/A"}</td>
+//                    <td>${delivery.driverContact || "N/A"}</td>
+//                    <td>${delivery.orderId}</td>
+//                    <td>
+//                        <button class="btn btn-success btn-sm save-driver" data-delivery-id="${delivery.deliveryId}">Save</button>
+//                    </td>
+//                </tr>
+//            `;
+//            $tableBody.append(row);
+//        });
+//    }
+//    renderTable(deliveries);
+//
+//    // Filter functionality
+//    $("#filterStatus").on("change", function () {
+//        const filter = $(this).val();
+//        const filteredData = filter === "all" ? deliveries : deliveries.filter((delivery) => delivery.status.toLowerCase() === filter);
+//        renderTable(filteredData);
+//    });
+//
+//    // Sort functionality
+//    $("#sortOptions").on("change", function () {
+//        const sort = $(this).val();
+//        const sortedData = [...deliveries].sort((a, b) => {
+//            if (sort === "idAsc") return a.deliveryId.localeCompare(b.deliveryId);
+//            if (sort === "idDesc") return b.deliveryId.localeCompare(a.deliveryId);
+//            if (sort === "dateAsc") return new Date(a.schedule) - new Date(b.schedule);
+//            if (sort === "dateDesc") return new Date(b.schedule) - new Date(a.schedule);
+//        });
+//        renderTable(sortedData);
+//    });
+//
+//    // Search functionality
+//    function searchDeliveries(query) {
+//        const searchedData = deliveries.filter(
+//            (delivery) =>
+//                delivery.deliveryId.toLowerCase().includes(query) ||
+//                delivery.orderId.toLowerCase().includes(query)
+//        );
+//        renderTable(searchedData);
+//    }
+//
+//    $("#searchButton").on("click", function () {
+//        const query = $("#searchDelivery").val().toLowerCase();
+//        searchDeliveries(query);
+//    });
+//
+//    $("#searchDelivery").on("keypress", function (e) {
+//        if (e.which === 13) {
+//            const query = $(this).val().toLowerCase();
+//            searchDeliveries(query);
+//        }
+//    });
+//
+//    // Save driver update
+//    $tableBody.on("click", ".save-driver", function () {
+//        const deliveryId = $(this).data("delivery-id");
+//        const selectedDriverId = $(`.driver-select[data-delivery-id="${deliveryId}"]`).val();
+//        const driver = drivers.find((d) => d.id === selectedDriverId);
+//
+//        if (driver) {
+//            const delivery = deliveries.find((d) => d.deliveryId === deliveryId);
+//            delivery.driverId = driver.id;
+//            delivery.driverName = driver.name;
+//            delivery.driverContact = driver.contact;
+//            renderTable(deliveries);
+//            alert(`Driver updated for Delivery ID: ${deliveryId}`);
+//        } else {
+//            alert("Please select a valid driver.");
+//        }
+//    });
+//
+//    // Logout button functionality
+//    $("#logoutButton").on("click", function () {
+//        alert("You have logged out!");
+//    });
 
-    const $tableBody = $("#deliveryListTableBody");
-
-    function renderTable(data) {
-        $tableBody.empty();
-        data.forEach((delivery) => {
-            const driverOptions = drivers
-                .map((driver) =>
-                    driver.id === delivery.driverId
-                        ? `<option value="${driver.id}" selected>${driver.id}</option>`
-                        : `<option value="${driver.id}">${driver.id}</option>`
-                )
-                .join("");
-
-            const row = `
-                <tr>
-                    <td>${delivery.deliveryId}</td>
-                    <td>${delivery.address}</td>
-                    <td>${delivery.status}</td>
-                    <td>${delivery.schedule}</td>
-                    <td>
-                        <select class="form-select form-select-sm driver-select" data-delivery-id="${delivery.deliveryId}">
-                            <option value="">Select Driver</option>
-                            ${driverOptions}
-                        </select>
-                    </td>
-                    <td>${delivery.driverName || "N/A"}</td>
-                    <td>${delivery.driverContact || "N/A"}</td>
-                    <td>${delivery.orderId}</td>
-                    <td>
-                        <button class="btn btn-success btn-sm save-driver" data-delivery-id="${delivery.deliveryId}">Save</button>
-                    </td>
-                </tr>
-            `;
-            $tableBody.append(row);
-        });
-    }
-    renderTable(deliveries);
-
-    // Filter functionality
-    $("#filterStatus").on("change", function () {
-        const filter = $(this).val();
-        const filteredData = filter === "all" ? deliveries : deliveries.filter((delivery) => delivery.status.toLowerCase() === filter);
-        renderTable(filteredData);
-    });
-
-    // Sort functionality
-    $("#sortOptions").on("change", function () {
-        const sort = $(this).val();
-        const sortedData = [...deliveries].sort((a, b) => {
-            if (sort === "idAsc") return a.deliveryId.localeCompare(b.deliveryId);
-            if (sort === "idDesc") return b.deliveryId.localeCompare(a.deliveryId);
-            if (sort === "dateAsc") return new Date(a.schedule) - new Date(b.schedule);
-            if (sort === "dateDesc") return new Date(b.schedule) - new Date(a.schedule);
-        });
-        renderTable(sortedData);
-    });
-
-    // Search functionality
-    function searchDeliveries(query) {
-        const searchedData = deliveries.filter(
-            (delivery) =>
-                delivery.deliveryId.toLowerCase().includes(query) ||
-                delivery.orderId.toLowerCase().includes(query)
-        );
-        renderTable(searchedData);
-    }
-
-    $("#searchButton").on("click", function () {
-        const query = $("#searchDelivery").val().toLowerCase();
-        searchDeliveries(query);
-    });
-
-    $("#searchDelivery").on("keypress", function (e) {
-        if (e.which === 13) {
-            const query = $(this).val().toLowerCase();
-            searchDeliveries(query);
-        }
-    });
-
-    // Save driver update
-    $tableBody.on("click", ".save-driver", function () {
-        const deliveryId = $(this).data("delivery-id");
-        const selectedDriverId = $(`.driver-select[data-delivery-id="${deliveryId}"]`).val();
-        const driver = drivers.find((d) => d.id === selectedDriverId);
-
-        if (driver) {
-            const delivery = deliveries.find((d) => d.deliveryId === deliveryId);
-            delivery.driverId = driver.id;
-            delivery.driverName = driver.name;
-            delivery.driverContact = driver.contact;
-            renderTable(deliveries);
-            alert(`Driver updated for Delivery ID: ${deliveryId}`);
-        } else {
-            alert("Please select a valid driver.");
-        }
-    });
-
-    // Logout button functionality
-    $("#logoutButton").on("click", function () {
-        alert("You have logged out!");
-    });
-
-    // Login Page Functionality
-    $("#loginForm").on("submit", function (e) {
-        e.preventDefault(); // Prevent form submission
-
-        const username = $("#username").val().trim();
-        const password = $("#password").val().trim();
-
-        if (username && password) {
-            alert(`Welcome, ${username}!`);
-            // Implement actual login logic (e.g., API request) here
-        } else {
-            alert("Please enter both username and password.");
-        }
-    });
 });

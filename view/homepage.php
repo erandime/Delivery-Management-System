@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<?php 
+    session_start();
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,28 +8,26 @@
     <title>Dispatcher's Homepage</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/styles.css">  
-    <!-- Font Awesome for icons -->
-    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">      <!-- Font Awesome for icons -->
 </head>
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-            <!-- Brand or Logo -->
             <a class="navbar-brand" href="#">Dispatcher Homepage</a>
 
-            <!-- Toggler Button for collapsing -->
+            <!-- Toggler Button (visible on small screens)-->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <!-- Collapsible content -->
+            <!-- Navigation links -->
             <div class="collapse navbar-collapse" id="navbarContent">
                 <!-- Left side: Nav Links -->
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Delivery List</a>
+                        <a class="nav-link" href="../view/delivery.php">Delivery List</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Notifications</a>
@@ -37,15 +37,15 @@
                     </li>
                 </ul>
 
-                <!-- Right side: Welcome, Username, Logout -->
+                <!--Welcome, Username, Logout -->
                 <div class="d-flex align-items-center">
-                    <span class="welcome-text me-3">Welcome, <span id="username">Guest</span></span>
+                    <span class="welcome-text me-3">Welcome, <?php echo $_SESSION["user"]["user_name"];?></span>     <!--Display current users name next to Welcome -->
                     <button class="btn btn-outline-light btn-sm" id="logoutButton">
                         <i class="fas fa-sign-out-alt me-2"></i>Logout
                     </button>
                 </div>
 
-                <!-- Date-Time Rectangle (visible on small screens) -->
+                <!-- Date-Time Rectangle (visible on small screens)-->
                 <div id="dateTimeInNav" class="d-none d-lg-none mt-3">
                     <div class="date-time-rectangle">
                         <p class="day" id="currentDay"></p>
@@ -57,10 +57,10 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
+    
     <div class="container-fluid mt-3">
         <div class="row">
-            <!-- Left Section: Delivery Stats -->
+            
             <div class="col-md-8">
                 <h3 class="section-caption text-center mb-4">
                     Delivery Overview
@@ -87,7 +87,7 @@
                 </div>
             </div>
 
-            <!-- Right Section: Day and Time Rectangle (visible on large screens) -->
+            <!-- Day and Time Rectangle (visible on large screens) -->
             <div class="col-md-4 d-none d-lg-flex justify-content-end">
                 <div class="date-time-rectangle">
                     <p class="day" id="currentDayLarge"></p>

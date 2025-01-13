@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<?php 
+    session_start();
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,9 +8,7 @@
     <title>Delivery List</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/styles.css">  
-
-    <!-- Font Awesome for icons -->
-    <!--<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">-->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">      <!-- Font Awesome for icons -->
 </head>
 <body>
     <!-- Navigation Bar -->
@@ -21,7 +21,7 @@
             <div class="collapse navbar-collapse" id="navbarContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="index.html">Home</a>
+                        <a class="nav-link active" href="../view/homepage.php">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">Notifications</a>
@@ -31,7 +31,7 @@
                     </li>
                 </ul>
                 <div class="d-flex align-items-center">
-                    <span class="welcome-text me-3">Welcome, <span id="username">Guest</span></span>
+                    <span class="welcome-text me-3">Welcome, <?php echo $_SESSION["user"]["user_name"];?></span>  <!--Display current users name next to Welcome -->
                     <button class="btn btn-outline-light btn-sm" id="logoutButton">
                         <i class="fas fa-sign-out-alt me-2"></i>Logout
                     </button>
@@ -40,7 +40,7 @@
         </div>
     </nav>
 
-    <!-- Delivery List Content -->
+    
     <div class="container mt-5">
         <h3 class="text-center mb-4">Delivery List</h3>
         

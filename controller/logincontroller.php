@@ -1,4 +1,5 @@
 <?php
+    session_start();
     if(!isset($_GET["status"])) {
         ?>
         <script>window.location="../view/login.php"</script>//Prevent access without going through login page
@@ -25,7 +26,13 @@
                $loginResult = $loginObj->validateLogin($username, $password); // Validate Credentials
                
                if($loginResult->num_rows>0) {
-                   echo "Login Successful";
+//                   echo "Login Successful";
+                   $userRow = $loginResult->fetch_assoc();      //Convert user record into an associative array
+                   $_SESSION["user"] = $userRow;        //Create session for the logged user
+//                   print_r($_SESSION["user"]);  
+                   ?> <script>window.location="../view/homepage.php"</script>
+                   <?php        //Upon successful login direct to Homepage
+                   
                } else {
                    throw new Exception("Invalid Username or Password");
                }

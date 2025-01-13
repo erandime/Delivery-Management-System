@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -10,13 +9,18 @@
 <body>
     <div class="container text-center">
         <h1 class="mb-5">DELIVERY MANAGEMENT SYSTEM</h1>
-        <!--<div class="col-sm-8 offset-sm-2" id="alertmsg"></div>-->
+        <div class="col-sm-8 offset-sm-2" id="alertmsg">&nbsp;</div>
         <!--Display the error message from login controller in an alert box above login panel. -->
         <?php
-            isset($_GET["msg"]);
-            $msg = base64_decode($_GET["msg"])
+            $msg = "";
+            if(isset($_GET["msg"])) {
+                $msg = base64_decode($_GET["msg"]);
+            }            
+            if($msg != "") {
+                ?> <div class="col-sm-8 offset-sm-2 alert alert-danger"><?php echo "$msg"; ?></div>
+                <?php
+            }
         ?>
-        <div class="col-sm-8 offset-sm-2 alert alert-danger"><?php echo "$msg"; ?></div>
         
         <div class="login-rectangle">
             <div class="login-header px-3 py-2">
@@ -33,10 +37,10 @@
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
                     </div>
-                    <div class="mb-3 form-check">
+<!--                    <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="rememberMe">
                         <label class="form-check-label" for="rememberMe">Remember Me</label>
-                    </div>
+                    </div>-->
                     <button type="submit" class="btn btn-primary btn-lg">Login</button>
                 </form>
             </div>
