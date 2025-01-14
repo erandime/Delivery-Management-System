@@ -1,5 +1,6 @@
 <?php 
-    session_start();
+include '../controller/deliverycontroller.php'; 
+session_start();
 ?>
 <html lang="en">
 <head>
@@ -7,11 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delivery List</title>
     <link rel="stylesheet" href="../bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/styles.css">  
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">      <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> 
 </head>
 <body>
-    <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
             <a class="navbar-brand">Delivery List</a>
@@ -31,7 +31,7 @@
                     </li>
                 </ul>
                 <div class="d-flex align-items-center">
-                    <span class="welcome-text me-3">Welcome, <?php echo $_SESSION["user"]["user_name"];?></span>  <!--Display current users name next to Welcome -->
+                    <span class="welcome-text me-3">Welcome, <?php echo $_SESSION["user"]["user_name"];?></span>
                     <button class="btn btn-outline-light btn-sm" id="logoutButton">
                         <i class="fas fa-sign-out-alt me-2"></i>Logout
                     </button>
@@ -40,47 +40,52 @@
         </div>
     </nav>
 
-    
     <div class="container mt-5">
         <h3 class="text-center mb-4">Delivery List</h3>
-        
+
         <!-- Filter, Sort, and Search Section -->
         <div class="row mb-3">
-            <!-- Filter and Sort Options -->
-            <div class="col-md-6">
+            <!-- Filter -->
+            <div class="col-md-4">
                 <div class="d-flex align-items-center">
                     <label for="filterStatus" class="form-label me-2">Filter:</label>
-                    <select id="filterStatus" class="form-select form-select-sm me-3">
+                    <select id="filterStatus" class="form-select form-select-sm">
                         <option value="all">All</option>
-                        <option value="pending">Pending</option>
-                        <option value="completed">Completed</option>
-                    </select>
-                    <label for="sortOptions" class="form-label me-2">Sort:</label>
-                    <select id="sortOptions" class="form-select form-select-sm">
-                        <option value="idAsc">ID (Ascending)</option>
-                        <option value="idDesc">ID (Descending)</option>
-                        <option value="dateAsc">Date (Oldest First)</option>
-                        <option value="dateDesc">Date (Newest First)</option>
+                        <option value="Ready to Dispatch">Ready to Dispatch</option>
+                        <option value="In Transit">In Transit</option>
+                        <option value="Completed">Completed</option>
+                        <option value="Driver Assigned">Driver Assigned</option>
                     </select>
                 </div>
             </div>
 
-            <!-- Search Bar -->
-            <div class="col-md-6">
+            <!-- Sort -->
+            <div class="col-md-4">
+                <div class="d-flex align-items-center">
+                    <label for="sortSchedule" class="form-label me-2">Sort:</label>
+                    <select id="sortSchedule" class="form-select form-select-sm">
+                        <option value="asc">Schedule (Ascending)</option>
+                        <option value="desc">Schedule (Descending)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Search -->
+            <div class="col-md-4">
                 <div class="d-flex justify-content-end">
-                    <input type="text" id="searchDelivery" class="form-control form-control-sm me-2" placeholder="Search by Delivery ID or Order ID">
+                    <input type="text" id="searchDelivery" class="form-control form-control-sm me-2" placeholder="Search by Delivery ID">
                     <button class="btn btn-primary btn-sm" id="searchButton">Search</button>
                 </div>
             </div>
         </div>
 
-        <!-- Table -->
+        <!-- Delivery Table -->
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead class="table-dark">
                     <tr>
                         <th>Delivery ID</th>
-                        <th>Delivery Address</th>
+                        <th>Address</th>
                         <th>Status</th>
                         <th>Schedule</th>
                         <th>Driver ID</th>
@@ -91,13 +96,56 @@
                     </tr>
                 </thead>
                 <tbody id="deliveryListTableBody">
-                    <!-- Dynamic rows will be added here -->
+                    <?php while ($row = $deliveries->fetch_assoc()) { 
+                        $isCompleted = $row['delivery_status'] === 'Completed'; 
+                        //Mark completed to rows with delivery status as completed
+                    ?>
+                        <tr>
+                            <td><?php echo $row['delivery_id']; ?></td>
+                            <td><?php echo $row['delivery_address']; ?></td>
+                            <td><?php echo $row['delivery_status']; ?></td>
+                            <td><?php echo $row['delivery_schedule']; ?></td>
+                            <td>
+    <select 
+        class="form-select form-select-sm driver-dropdown" 
+        data-delivery-id="<?php echo $row['delivery_id']; ?>" 
+        id="driverDropdown_<?php echo $row['delivery_id']; ?>" 
+        name="driver_id_<?php echo $row['delivery_id']; ?>"
+    >
+        <option value="">Select Driver</option>
+        <?php foreach ($drivers as $driver) { ?>
+            <option value="<?php echo $driver['drivers_id']; ?>" 
+                <?php echo $row['delivery_driver_id'] == $driver['drivers_id'] ? 'selected' : ''; ?>
+            >
+                <?php echo $driver['drivers_id']; ?>
+            </option>
+        <?php } ?>
+    </select>
+</td>
+
+                            <td><?php echo $row['drivers_name'] ?? 'N/A'; ?></td>
+                            <td><?php echo $row['drivers_contact_no'] ?? 'N/A'; ?></td>
+                            <td><?php echo $row['orders_id']; ?></td>
+                            <td>
+                                <button 
+                                    class="btn btn-primary btn-sm save-driver" 
+                                    data-delivery-id="<?php echo $row['delivery_id']; 
+                                    //data-delivery-id stores delivery ID for JS functionality
+                                    ?>" 
+                                    <?php echo $isCompleted ? 'disabled' : ''; 
+                                    //disable dropdown for completed deliveries
+                                    ?>
+                                >
+                                    Save
+                                </button>
+                            </td>
+                        </tr>
+                    <?php } ?>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Footer -->
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container text-center">
             <span class="text-muted">© 2025 Dispatcher System. All Rights Reserved.</span>
@@ -106,6 +154,6 @@
 
     <script src="../bootstrap/js/jquery-3.7.1.min.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
-    <script src="../js/scripts.js"></script> 
+    <script src="../js/scripts.js"></script>
 </body>
 </html>

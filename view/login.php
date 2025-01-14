@@ -31,7 +31,7 @@
                 <form action="../controller/logincontroller.php?status=login" method="post">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
-                        <input type="email" class="form-control" id="username" name="username" placeholder="Enter your username">
+                        <input  type="email" class="form-control" id="username" name="username" placeholder="Enter your username">
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
