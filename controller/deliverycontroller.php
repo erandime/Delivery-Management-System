@@ -17,16 +17,37 @@ class DeliveryController {
     }
     
     public function assignDriver($deliveryId, $driverId) {
-        $con = $GLOBALS['con']; // Database connection
+    $con = $GLOBALS['con']; // Database connection
+
+    // Start transaction
+    $con->begin_transaction();
+
+    try {
+        // Update the delivery table to assign the driver
         $stmt = $con->prepare("UPDATE delivery SET delivery_driver_id = ?, delivery_status = 'Driver Assigned' WHERE delivery_id = ?");
         $stmt->bind_param("ii", $driverId, $deliveryId);
-
-        if ($stmt->execute()) {
-            return ['success' => true, 'message' => 'Driver assigned successfully.'];
-        } else {
-            return ['success' => false, 'message' => 'Failed to assign driver.'];
+        if (!$stmt->execute()) {
+            throw new Exception("Failed to update delivery table.");
         }
+
+        // Update the drivers table to decrement the drivers_daily_quota
+        $stmt = $con->prepare("UPDATE drivers SET drivers_daily_quota = drivers_daily_quota - 1 WHERE drivers_id = ? AND drivers_daily_quota > 0");
+        $stmt->bind_param("i", $driverId);
+        if (!$stmt->execute() || $stmt->affected_rows === 0) {
+            throw new Exception("Failed to update driver's daily quota. The quota might already be zero.");
+        }
+
+        // Commit transaction
+        $con->commit();
+
+        return ['success' => true, 'message' => "Driver assigned successfully and driver's daily quota updated."];
+    } catch (Exception $e) {
+        // Rollback transaction on failure
+        $con->rollback();
+        return ['success' => false, 'message' => $e->getMessage()];
     }
+}
+
 }
 
 // Create a DeliveryController instance
