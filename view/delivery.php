@@ -104,52 +104,48 @@ if (!isset($_SESSION['user'])) {
                     </tr>
                 </thead>
                 <tbody id="deliveryListTableBody">
-                    <?php while ($row = $deliveries->fetch_assoc()) { 
-                        $isCompleted = $row['delivery_status'] === 'Completed'; 
-                        //Mark completed to rows with delivery status as completed
-                    ?>
-                        <tr>
-                            <td><?php echo $row['delivery_id']; ?></td>
-                            <td><?php echo $row['delivery_address']; ?></td>
-                            <td><?php echo $row['delivery_status']; ?></td>
-                            <td><?php echo $row['delivery_schedule']; ?></td>
-                            <td>
-    <select 
-        class="form-select form-select-sm driver-dropdown" 
-        data-delivery-id="<?php echo $row['delivery_id']; ?>" 
-        id="driverDropdown_<?php echo $row['delivery_id']; ?>" 
-        name="driver_id_<?php echo $row['delivery_id']; ?>"
-    >
-        <option value="">Select Driver</option>
-        <?php foreach ($drivers as $driver) { ?>
-            <option value="<?php echo $driver['drivers_id']; ?>" 
-                <?php echo $row['delivery_driver_id'] == $driver['drivers_id'] ? 'selected' : ''; ?>
-            >
-                <?php echo $driver['drivers_id']; ?>
-            </option>
-        <?php } ?>
-    </select>
-</td>
-
-                            <td><?php echo $row['drivers_name'] ?? 'N/A'; ?></td>
-                            <td><?php echo $row['drivers_contact_no'] ?? 'N/A'; ?></td>
-                            <td><?php echo $row['orders_id']; ?></td>
-                            <td>
-                                <button 
-                                    class="btn btn-primary btn-sm save-driver" 
-                                    data-delivery-id="<?php echo $row['delivery_id']; 
-                                    //data-delivery-id stores delivery ID for JS functionality
-                                    ?>" 
-                                    <?php echo $isCompleted ? 'disabled' : ''; 
-                                    //disable dropdown for completed deliveries
-                                    ?>
-                                >
-                                    Save
-                                </button>
-                            </td>
-                        </tr>
+    <?php while ($row = $deliveries->fetch_assoc()) { 
+        $isCompleted = $row['delivery_status'] === 'Completed'; 
+        $isInTransit = $row['delivery_status'] === 'In Transit';
+    ?>
+        <tr>
+            <td><?php echo $row['delivery_id']; ?></td>
+            <td><?php echo $row['delivery_address']; ?></td>
+            <td><?php echo $row['delivery_status']; ?></td>
+            <td><?php echo $row['delivery_schedule']; ?></td>
+            <td>
+                <select 
+                    class="form-select form-select-sm driver-dropdown" 
+                    data-delivery-id="<?php echo $row['delivery_id']; ?>" 
+                    id="driverDropdown_<?php echo $row['delivery_id']; ?>" 
+                    name="driver_id_<?php echo $row['delivery_id']; ?>"
+                >
+                    <option value="">Select Driver</option>
+                    <?php foreach ($drivers as $driver) { ?>
+                        <option value="<?php echo $driver['drivers_id']; ?>" 
+                            <?php echo $row['delivery_driver_id'] == $driver['drivers_id'] ? 'selected' : ''; ?>
+                        >
+                            <?php echo $driver['drivers_id']; ?>
+                        </option>
                     <?php } ?>
-                </tbody>
+                </select>
+            </td>
+            <td id="driverName_<?php echo $row['delivery_id']; ?>"><?php echo $row['drivers_name'] ?? 'N/A'; ?></td>
+            <td id="driverContact_<?php echo $row['delivery_id']; ?>"><?php echo $row['drivers_contact_no'] ?? 'N/A'; ?></td>
+            <td><?php echo $row['orders_id']; ?></td>
+            <td>
+                <button 
+                    class="btn btn-primary btn-sm save-driver" 
+                    data-delivery-id="<?php echo $row['delivery_id']; ?>" 
+                    <?php echo $isCompleted ? 'disabled' : ''; ?>
+                    <?php echo $isInTransit ? 'disabled' : ''; ?>
+                >
+                    Save
+                </button>
+            </td>
+        </tr>
+    <?php } ?>
+</tbody>
             </table>
         </div>
     </div>
