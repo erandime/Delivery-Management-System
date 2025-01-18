@@ -101,24 +101,47 @@ $(document).ready(function () {
         });
     });
 
-    // Search functionality
+    $(document).ready(function () {
     $("#searchButton").on("click", function () {
-        const query = $("#searchDelivery").val().trim().toLowerCase();
+        const query = $("#searchDelivery").val().trim(); // Get the input value
+        let matchFound = false; // Flag to track if a match is found
+
         $("tbody#deliveryListTableBody tr").each(function () {
-            const deliveryId = $(this).find("td:nth-child(1)").text().toLowerCase();
-            const orderId = $(this).find("td:nth-child(8)").text().toLowerCase();
-            if (deliveryId.includes(query) || orderId.includes(query)) {
-                $(this).show();
+            const deliveryId = $(this).find("td:nth-child(1)").text().trim(); // Get the delivery ID in the row
+
+            // Ensure both values are treated as numbers for exact comparison
+            if (parseInt(deliveryId, 10) === parseInt(query, 10)) {
+                $(this).show(); // Show row if it matches exactly
+                matchFound = true; // Set the flag if a match is found
             } else {
-                $(this).hide();
+                $(this).hide(); // Hide rows that don't match
             }
         });
+
+        // Display an error message if no match is found
+        if (!matchFound) {
+            $("#errorMessage").text("Delivery not found. Please verify the Delivery ID.");
+            $("#errorMessage").show(); // Show the error message
+        } else {
+            $("#errorMessage").hide(); // Hide the error message if a match is found
+        }
     });
 
+    // Trigger search on Enter keypress
     $("#searchDelivery").on("keypress", function (e) {
         if (e.which === 13) {
             $("#searchButton").click();
         }
     });
+
+    // Clear search functionality
+    $("#clearSearchButton").on("click", function () {
+        $("#searchDelivery").val(""); // Clear the input field
+        $("#errorMessage").hide(); // Hide the error message
+        $("tbody#deliveryListTableBody tr").show(); // Show all rows
+    });
+});
+
+
 
 });
