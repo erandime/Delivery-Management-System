@@ -45,6 +45,21 @@
            }
            
            break;
+           
+        case "logout":
+        // Destroy session and redirect to login page
+            session_unset();
+            session_destroy();
+            ?>
+            <script>window.location="../view/login.php"</script>
+            <?php
+            exit();
+
+        default:
+        ?>
+        <script>window.location="../view/login.php"</script>
+        <?php
+        break;   
     }
     
     
