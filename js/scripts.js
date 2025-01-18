@@ -31,42 +31,33 @@ $(document).ready(function () {
 
     // Save driver functionality
     $(".save-driver").on("click", function () {
-        const deliveryId = $(this).data("delivery-id");
-        const selectedDriverId = $(`.driver-dropdown[data-delivery-id="${deliveryId}"]`).val();
+    const deliveryId = $(this).data("delivery-id");
+    const selectedDriverId = $(`.driver-dropdown[data-delivery-id="${deliveryId}"]`).val();
 
-        if (!selectedDriverId) {
-            alert("Please select a driver.");
-            return;
-        }
+    if (!selectedDriverId) {
+        alert("Please select a driver.");
+        return;
+    }
 
-        if ($(this).is(":disabled")) {
-            alert("This delivery is already completed and cannot be modified.");
-            return;
-        }
+    // Send AJAX request to assign the driver
+    $.post("../controller/deliverycontroller.php", 
+        { action: "assignDriver", deliveryId, driverId: selectedDriverId },
+        function (response) {
+            if (response.success) {
+                alert(response.message);
 
-        // Send AJAX request to assign the driver
-        $.post("../controller/deliverycontroller.php", 
-            { action: "assignDriver", deliveryId, driverId: selectedDriverId },
-            function (response) {
-                console.log("AJAX Response:", response); // Debugging log
-
-                // Directly use the response as it's already parsed as a JavaScript object
-                if (response.success) {
-                    alert(response.message);
-
-                    // Update the table dynamically
-                    $(`tr[data-delivery-id="${deliveryId}"] .status-column`).text('Driver Assigned');
-                    $(`tr[data-delivery-id="${deliveryId}"] .driver-name-column`).text(selectedDriverId);
-                } else {
-                    alert(response.message); // Show error message from the server
-                }
-            },
-            "json" // Ensure response is automatically parsed as JSON by jQuery
-        ).fail(function (jqXHR, textStatus, errorThrown) {
-            console.error("AJAX Error:", textStatus, errorThrown);
-            alert("Failed to assign driver. Please try again.");
-        });
+                // Update the table dynamically
+                $(`tr[data-delivery-id="${deliveryId}"] .status-column`).text('Driver Assigned');
+            } else {
+                alert(response.message); // Display error message from the server
+            }
+        },
+        "json"
+    ).fail(function () {
+        alert("Failed to assign driver. Please try again later or Contact Support.");
     });
+});
+
 
     // Filter functionality
     $("#filterStatus").on("change", function () {

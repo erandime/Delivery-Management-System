@@ -36,7 +36,7 @@ class DeliveryController {
             $stmt = $con->prepare("UPDATE drivers SET drivers_daily_quota = drivers_daily_quota + 1 WHERE drivers_id = ?");
             $stmt->bind_param("i", $previousDriverId);
             if (!$stmt->execute()) {
-                throw new Exception("Failed to update quota of the previous driver.");
+                throw new Exception("Unable to update quota for the previous driver.");
             }
         }
 
@@ -44,14 +44,14 @@ class DeliveryController {
         $stmt = $con->prepare("UPDATE delivery SET delivery_driver_id = ?, delivery_status = 'Driver Assigned' WHERE delivery_id = ?");
         $stmt->bind_param("ii", $newDriverId, $deliveryId);
         if (!$stmt->execute()) {
-            throw new Exception("Failed to update delivery table.");
+            throw new Exception("Unable to update the delivery table. Please try again later.");
         }
 
         // Decrement the quota of the new driver
         $stmt = $con->prepare("UPDATE drivers SET drivers_daily_quota = drivers_daily_quota - 1 WHERE drivers_id = ? AND drivers_daily_quota > 0");
         $stmt->bind_param("i", $newDriverId);
         if (!$stmt->execute() || $stmt->affected_rows === 0) {
-            throw new Exception("Failed to update the new driver's daily quota. The quota might already be zero.");
+            throw new Exception("Selected driver is unavailable, please select a different driver.");
         }
 
         // Commit transaction
@@ -64,6 +64,7 @@ class DeliveryController {
         return ['success' => false, 'message' => $e->getMessage()];
     }
 }
+
 
 
 }
