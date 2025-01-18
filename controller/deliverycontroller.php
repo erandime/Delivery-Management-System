@@ -16,37 +16,55 @@ class DeliveryController {
         return $this->deliveryModel->getAvailableDrivers();
     }
     
-    public function assignDriver($deliveryId, $driverId) {
+    public function assignDriver($deliveryId, $newDriverId) {
     $con = $GLOBALS['con']; // Database connection
 
     // Start transaction
     $con->begin_transaction();
 
     try {
-        // Update the delivery table to assign the driver
+        // Fetch the currently assigned driver
+        $stmt = $con->prepare("SELECT delivery_driver_id FROM delivery WHERE delivery_id = ?");
+        $stmt->bind_param("i", $deliveryId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+        $previousDriverId = $row['delivery_driver_id'];
+
+        // If there's a previous driver assigned, increment their quota
+        if ($previousDriverId) {
+            $stmt = $con->prepare("UPDATE drivers SET drivers_daily_quota = drivers_daily_quota + 1 WHERE drivers_id = ?");
+            $stmt->bind_param("i", $previousDriverId);
+            if (!$stmt->execute()) {
+                throw new Exception("Failed to update quota of the previous driver.");
+            }
+        }
+
+        // Update the delivery table with the new driver
         $stmt = $con->prepare("UPDATE delivery SET delivery_driver_id = ?, delivery_status = 'Driver Assigned' WHERE delivery_id = ?");
-        $stmt->bind_param("ii", $driverId, $deliveryId);
+        $stmt->bind_param("ii", $newDriverId, $deliveryId);
         if (!$stmt->execute()) {
             throw new Exception("Failed to update delivery table.");
         }
 
-        // Update the drivers table to decrement the drivers_daily_quota
+        // Decrement the quota of the new driver
         $stmt = $con->prepare("UPDATE drivers SET drivers_daily_quota = drivers_daily_quota - 1 WHERE drivers_id = ? AND drivers_daily_quota > 0");
-        $stmt->bind_param("i", $driverId);
+        $stmt->bind_param("i", $newDriverId);
         if (!$stmt->execute() || $stmt->affected_rows === 0) {
-            throw new Exception("Failed to update driver's daily quota. The quota might already be zero.");
+            throw new Exception("Failed to update the new driver's daily quota. The quota might already be zero.");
         }
 
         // Commit transaction
         $con->commit();
 
-        return ['success' => true, 'message' => "Driver assigned successfully and driver's daily quota updated."];
+        return ['success' => true, 'message' => "Driver assigned successfully, and Driver's daily quota updated."];
     } catch (Exception $e) {
         // Rollback transaction on failure
         $con->rollback();
         return ['success' => false, 'message' => $e->getMessage()];
     }
 }
+
 
 }
 
