@@ -75,7 +75,6 @@ if (!isset($_SESSION['user'])) {
             </div>
 
             <!-- Search -->
-            <!-- Search -->
 <div class="col-md-4">
     <div class="d-flex justify-content-end">
         <input type="text" id="searchDelivery" class="form-control form-control-sm me-2" placeholder="Search by Delivery ID">
