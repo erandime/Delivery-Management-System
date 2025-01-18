@@ -1,6 +1,10 @@
 <?php 
 include '../controller/deliverycontroller.php'; 
 session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");
+    exit();
+}
 ?>
 <html lang="en">
 <head>
@@ -32,9 +36,9 @@ session_start();
                 </ul>
                 <div class="d-flex align-items-center">
                     <span class="welcome-text me-3">Welcome, <?php echo $_SESSION["user"]["user_name"];?></span>
-                    <button class="btn btn-outline-light btn-sm" id="logoutButton">
+                    <a href="../controller/logincontroller.php?status=logout" class="btn btn-outline-light btn-sm">
                         <i class="fas fa-sign-out-alt me-2"></i>Logout
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -71,12 +75,16 @@ session_start();
             </div>
 
             <!-- Search -->
-            <div class="col-md-4">
-                <div class="d-flex justify-content-end">
-                    <input type="text" id="searchDelivery" class="form-control form-control-sm me-2" placeholder="Search by Delivery ID">
-                    <button class="btn btn-primary btn-sm" id="searchButton">Search</button>
-                </div>
-            </div>
+            <!-- Search -->
+<div class="col-md-4">
+    <div class="d-flex justify-content-end">
+        <input type="text" id="searchDelivery" class="form-control form-control-sm me-2" placeholder="Search by Delivery ID">
+        <button class="btn btn-primary btn-sm" id="searchButton">Search</button>
+        <button class="btn btn-secondary btn-sm ms-2" id="clearSearchButton">Clear</button>
+    </div>
+    <div id="errorMessage" class="text-danger mt-2" style="display: none;">Error message placeholder</div>
+</div>
+
         </div>
 
         <!-- Delivery Table -->
