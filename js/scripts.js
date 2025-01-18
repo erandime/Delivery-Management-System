@@ -31,33 +31,32 @@ $(document).ready(function () {
 
     // Save driver functionality
     $(".save-driver").on("click", function () {
-    const deliveryId = $(this).data("delivery-id");
-    const selectedDriverId = $(`.driver-dropdown[data-delivery-id="${deliveryId}"]`).val();
+        const deliveryId = $(this).data("delivery-id");
+        const selectedDriverId = $(`.driver-dropdown[data-delivery-id="${deliveryId}"]`).val();
 
-    if (!selectedDriverId) {
-        alert("Please select a driver.");
-        return;
-    }
+        if (!selectedDriverId) {
+            alert("Please select a driver.");
+            return;
+        }
 
-    // Send AJAX request to assign the driver
-    $.post("../controller/deliverycontroller.php", 
-        { action: "assignDriver", deliveryId, driverId: selectedDriverId },
-        function (response) {
-            if (response.success) {
-                alert(response.message);
+        // Send AJAX request to assign the driver
+        $.post("../controller/deliverycontroller.php", 
+            { action: "assignDriver", deliveryId, driverId: selectedDriverId },
+            function (response) {
+                if (response.success) {
+                    alert(response.message);
 
-                // Update the table dynamically
-                $(`tr[data-delivery-id="${deliveryId}"] .status-column`).text('Driver Assigned');
-            } else {
-                alert(response.message); // Display error message from the server
-            }
-        },
-        "json"
-    ).fail(function () {
-        alert("Failed to assign driver. Please try again later or Contact Support.");
+                    // Update the table dynamically
+                    $(`tr[data-delivery-id="${deliveryId}"] .status-column`).text('Driver Assigned');
+                } else {
+                    alert(response.message); // Display error message from the server
+                }
+            },
+            "json"
+        ).fail(function () {
+            alert("Error occured. Please try again later or Contact Support.");
+        });
     });
-});
-
 
     // Filter functionality
     $("#filterStatus").on("change", function () {
@@ -92,7 +91,7 @@ $(document).ready(function () {
         });
     });
 
-    $(document).ready(function () {
+    // Search functionality
     $("#searchButton").on("click", function () {
         const query = $("#searchDelivery").val().trim(); // Get the input value
         let matchFound = false; // Flag to track if a match is found
@@ -131,8 +130,33 @@ $(document).ready(function () {
         $("#errorMessage").hide(); // Hide the error message
         $("tbody#deliveryListTableBody tr").show(); // Show all rows
     });
-});
 
+    // Event listener for driver dropdown change
+    $(".driver-dropdown").on("change", function () {
+        const deliveryId = $(this).data("delivery-id");
+        const driverId = $(this).val();
 
-
+        if (driverId) {
+            // Send AJAX request to get driver details
+            $.post("../controller/deliverycontroller.php", 
+                { action: "getDriverDetails", driverId: driverId },
+                function (response) {
+                    if (response) {
+                        // Update the driver name and contact fields
+                        $(`#driverName_${deliveryId}`).text(response.drivers_name);
+                        $(`#driverContact_${deliveryId}`).text(response.drivers_contact_no);
+                    } else {
+                        alert("Failed to fetch driver details. Please try again.");
+                    }
+                },
+                "json"
+            ).fail(function () {
+                alert("Failed to fetch driver details. Please try again.");
+            });
+        } else {
+            // Clear the driver name and contact fields if no driver is selected
+            $(`#driverName_${deliveryId}`).text('N/A');
+            $(`#driverContact_${deliveryId}`).text('N/A');
+        }
+    });
 });
