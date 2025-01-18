@@ -1,6 +1,11 @@
-<?php 
-    session_start();
-?>
+<?php
+session_start();
+if (!isset($_SESSION['user'])) {
+    header("Location: login.php");//Start session, End session if user is not logged in -> Redirect to login
+    exit();
+}
+?> 
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -40,9 +45,9 @@
                 <!--Welcome, Username, Logout -->
                 <div class="d-flex align-items-center">
                     <span class="welcome-text me-3">Welcome, <?php echo $_SESSION["user"]["user_name"];?></span>     <!--Display current users name next to Welcome -->
-                    <button class="btn btn-outline-light btn-sm" id="logoutButton">
+                    <a href="../controller/logincontroller.php?status=logout" class="btn btn-outline-light btn-sm">
                         <i class="fas fa-sign-out-alt me-2"></i>Logout
-                    </button>
+                    </a>
                 </div>
 
                 <!-- Date-Time Rectangle (visible on small screens)-->
