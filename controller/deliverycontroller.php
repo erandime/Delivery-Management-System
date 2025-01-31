@@ -1,5 +1,5 @@
 <?php
-include '../model/deliverymodel.php';
+include __DIR__ . '/../model/deliverymodel.php';
 
 class DeliveryController {
     private $deliveryModel;
@@ -28,8 +28,17 @@ class DeliveryController {
             $stmt = $con->prepare("SELECT delivery_driver_id FROM delivery WHERE delivery_id = ?");
             $stmt->bind_param("i", $deliveryId);
             $stmt->execute();
+
             $result = $stmt->get_result();
+            if (!$result) {
+                throw new Exception("Failed to fetch delivery details.");
+            }
+
             $row = $result->fetch_assoc();
+            if (!$row) {
+                throw new Exception("Delivery not found.");
+            }
+
             $previousDriverId = $row['delivery_driver_id'];
 
             // If there's a previous driver assigned, increment their quota
@@ -71,8 +80,13 @@ class DeliveryController {
         $stmt = $con->prepare("SELECT drivers_name, drivers_contact_no FROM drivers WHERE drivers_id = ?");
         $stmt->bind_param("i", $driverId);
         $stmt->execute();
+
         $result = $stmt->get_result();
-        return $result->fetch_assoc();
+        if (!$result) {
+            return null; // Return null if query execution fails
+        }
+
+        return $result->fetch_assoc() ?: null;
     }
 }
 
@@ -92,6 +106,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 header('Content-Type: application/json');
                 echo json_encode($response);
                 exit();
+
             case 'getDriverDetails':
                 $driverId = intval($_POST['driverId']);
                 $driverDetails = $deliveryController->getDriverDetails($driverId);
