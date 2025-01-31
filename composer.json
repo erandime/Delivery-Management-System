@@ -1,0 +1,28 @@
+{
+    "name": "emada/php-project1",
+    "description": "MSc SDP assignment Testing",
+    "require": {
+        "phpunit/phpunit": "^9.6"
+    },
+    "autoload": {
+        "classmap": [
+            "controller/",
+            "model/",
+            "view/",
+            "commons/",
+            "css/",
+            "js/",
+            "bootstrap/"
+        ]
+    },
+    "autoload-dev": {
+        "classmap": [
+            "tests/"
+        ]
+    },
+    "authors": [
+        {
+            "name": "erandime"
+        }
+    ]
+}

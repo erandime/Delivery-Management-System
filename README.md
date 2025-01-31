@@ -68,9 +68,9 @@ Method:
 Development Approach: Object-Oriented Design and MVC architecture.  
 Development Model: Agile (scrum) model which supports incremental development and delivering working software in sprints. Sprint 1 consists of use cases 1.1 and 2.1 which will be completed and integrated for this assessment.  
 
-Tools and Programming Languages: NetBeans IDE 24, MySQL Database Management System, PHP 8.3, JavaScript, JQuery 3.7.1, Bootstrap 5.3.3, Apache 2.4.58 server, Git 2.47.1.  
+Tools and Programming Languages: NetBeans IDE 24, MariaDB-MySQL Database Management System, PHP 8.3, JavaScript, JQuery 3.7.1, CSS, Bootstrap 5.3.3, Apache 2.4.58 server, Git 2.47.1, PHPUnit 9.6.22, Burp Suite Community Edition, Visual Paradigm
 
-Testing: Perform unit tests and validate the use case based on an acceptance criteria.  
+Testing: Perform unit tests using PHPUnit, Component testing using Selenium and Security testing using Burp Suite.  
 
 Team Collaboration- Number of team members is two:  
 Erandi Madawalagama (CB015490) - Use Case 1.1(Dispatcher assigns delivery drivers and views delivery status) 
