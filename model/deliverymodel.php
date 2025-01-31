@@ -1,5 +1,5 @@
 <?php
-include_once '../commons/dbconnection.php';
+include_once __DIR__ . '/../commons/dbconnection.php';
 $dbConnectionObj = new dbConnection();
 
 class DeliveryModel {
