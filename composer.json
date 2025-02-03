@@ -7,18 +7,18 @@
     },
     "autoload": {
         "classmap": [
-            "controller/",
-            "model/",
-            "view/",
-            "commons/",
-            "css/",
-            "js/",
-            "bootstrap/"
+            "01_src/controller/",
+            "01_src/model/",
+            "01_src/view/",
+            "01_src/commons/",
+            "01_src/css/",
+            "01_src/js/",
+            "01_src/bootstrap/"
         ]
     },
     "autoload-dev": {
         "classmap": [
-            "tests/"
+            "02_tests/phpunit/"
         ]
     },
     "authors": [

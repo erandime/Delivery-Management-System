@@ -17,7 +17,7 @@ class DriverAssignmentTest {
         );
 
         // Step 1: Log in to the system
-        $this->driver->get('http://localhost/PhpProject1/view/login.php');
+        $this->driver->get('http://localhost/PhpProject1/01_src/view/login.php');
         $this->driver->findElement(WebDriverBy::id('username'))->sendKeys('oliver@gmail.com');
         $this->driver->findElement(WebDriverBy::id('password'))->sendKeys('oliver123');
         $this->driver->findElement(WebDriverBy::cssSelector('button[type="submit"]'))->click();

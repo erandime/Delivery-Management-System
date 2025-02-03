@@ -5,7 +5,7 @@
 
     <testsuites>
         <testsuite name="Assignment">
-            <directory>tests</directory>
+            <directory>02_tests/phpunit</directory>
         </testsuite>
     </testsuites>
 </phpunit>
