@@ -14,35 +14,61 @@ class DeliveryControllerTest extends TestCase {
     protected function setUp(): void {
         $_SERVER['REQUEST_METHOD'] = 'POST';
 
-        // Mock the database connection
         $this->mockDb = $this->createMock(mysqli::class);
         $GLOBALS['con'] = $this->mockDb;
 
-        // Initialize the DeliveryController
         $this->deliveryController = new DeliveryController();
     }
 
     public function testAssignDriverSuccess(): void {
-        // Create a mock statement object
         $stmtMock = $this->createMock(mysqli_stmt::class);
 
-        // Mock a valid result object with no currently assigned driver
+        // Mock valid result object and successful execution
         $resultMock = $this->createMock(mysqli_result::class);
         $resultMock->method('fetch_assoc')->willReturn(['delivery_driver_id' => null]);
 
-        // Simulate successful statement execution and return of results
         $stmtMock->method('execute')->willReturn(true);
         $stmtMock->method('get_result')->willReturn($resultMock);
 
-        // Mock the database to return the prepared statement
         $this->mockDb->method('prepare')->willReturn($stmtMock);
 
-        // Act: Call the method under test
         $result = $this->deliveryController->assignDriver(1, 2);
 
-        // Assert: Verify the expected success response
         $this->assertTrue($result['success']);
         $this->assertEquals("Driver assigned successfully, and driver's daily quota updated.", $result['message']);
+    }
+
+    public function testAssignDriverDriverUnavailable(): void {
+        $stmtMock = $this->createMock(mysqli_stmt::class);
+
+        // Simulate `get_result()` returning false (database error)
+        $stmtMock->method('execute')->willReturn(true);
+        $stmtMock->method('get_result')->willReturn(false);
+
+        $this->mockDb->method('prepare')->willReturn($stmtMock);
+
+        $result = $this->deliveryController->assignDriver(1, 3);
+
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString("Failed to fetch delivery details.", $result['message']);
+    }
+
+    public function testAssignDriverDeliveryIdNotFound(): void {
+        $stmtMock = $this->createMock(mysqli_stmt::class);
+
+        // Simulate `fetch_assoc()` returning null (delivery ID not found)
+        $resultMock = $this->createMock(mysqli_result::class);
+        $resultMock->method('fetch_assoc')->willReturn(null);
+
+        $stmtMock->method('execute')->willReturn(true);
+        $stmtMock->method('get_result')->willReturn($resultMock);
+
+        $this->mockDb->method('prepare')->willReturn($stmtMock);
+
+        $result = $this->deliveryController->assignDriver(9999, 2);
+
+        $this->assertFalse($result['success']);
+        $this->assertStringContainsString("Delivery not found", $result['message']);
     }
 
     protected function tearDown(): void {

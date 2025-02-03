@@ -2,7 +2,8 @@
     "name": "emada/php-project1",
     "description": "MSc SDP assignment Testing",
     "require": {
-        "phpunit/phpunit": "^9.6"
+        "phpunit/phpunit": "^9.6",
+        "php-webdriver/webdriver": "^1.15"
     },
     "autoload": {
         "classmap": [
