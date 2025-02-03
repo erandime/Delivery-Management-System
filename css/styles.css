@@ -205,3 +205,8 @@ body, html {
     background-color:   #bad8b6 !important;
     color: black !important;
 }
+
+.status-updated {
+    background-color: #d4edda;  /* Light green color */
+    transition: background-color 0.5s ease;
+}

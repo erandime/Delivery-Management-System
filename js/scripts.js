@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     // Function to get the ordinal suffix for the date
     function getOrdinalSuffix(date) {
         if (date > 3 && date < 21) return "th";
@@ -26,10 +25,10 @@ $(document).ready(function () {
         $("#currentTime, #currentTimeLarge").text(formattedTime);
     }
 
-    updateDateTime(); // Initial call
-    setInterval(updateDateTime, 1000); // Update every second
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
 
-    // Save driver functionality
+    // Save driver functionality with dynamic status update
     $(".save-driver").on("click", function () {
         const deliveryId = $(this).data("delivery-id");
         const selectedDriverId = $(`.driver-dropdown[data-delivery-id="${deliveryId}"]`).val();
@@ -40,22 +39,30 @@ $(document).ready(function () {
         }
 
         // Send AJAX request to assign the driver
-        $.post("../controller/deliverycontroller.php", 
+        $.post("../controller/deliverycontroller.php",
             { action: "assignDriver", deliveryId, driverId: selectedDriverId },
             function (response) {
                 if (response.success) {
                     alert(response.message);
 
-                    // Update the table dynamically
+                    // Update the status column dynamically
                     $(`tr[data-delivery-id="${deliveryId}"] .status-column`).text('Driver Assigned');
+
+                    // Optionally highlight the updated row
+                    $(`tr[data-delivery-id="${deliveryId}"]`).addClass('status-updated');
                 } else {
-                    alert(response.message); // Display error message from the server
+                    alert(response.message);
                 }
             },
             "json"
         ).fail(function () {
-            alert("Error occured. Please try again later or Contact Support.");
+            alert("An error occurred. Please try again later.");
         });
+    });
+
+    // Optional: Remove highlight after click
+    $(document).on("click", ".status-updated", function () {
+        $(this).removeClass('status-updated');
     });
 
     // Filter functionality
@@ -80,7 +87,7 @@ $(document).ready(function () {
             const scheduleA = new Date($(a).find("td:nth-child(4)").text().trim());
             const scheduleB = new Date($(b).find("td:nth-child(4)").text().trim());
 
-            if (isNaN(scheduleA)) return 1; // Handle invalid dates
+            if (isNaN(scheduleA)) return 1;
             if (isNaN(scheduleB)) return -1;
 
             return sortOrder === "asc" ? scheduleA - scheduleB : scheduleB - scheduleA;
@@ -93,68 +100,59 @@ $(document).ready(function () {
 
     // Search functionality
     $("#searchButton").on("click", function () {
-        const query = $("#searchDelivery").val().trim(); // Get the input value
-        let matchFound = false; // Flag to track if a match is found
+        const query = $("#searchDelivery").val().trim();
+        let matchFound = false;
 
         $("tbody#deliveryListTableBody tr").each(function () {
-            const deliveryId = $(this).find("td:nth-child(1)").text().trim(); // Get the delivery ID in the row
-
-            // Ensure both values are treated as numbers for exact comparison
+            const deliveryId = $(this).find("td:nth-child(1)").text().trim();
             if (parseInt(deliveryId, 10) === parseInt(query, 10)) {
-                $(this).show(); // Show row if it matches exactly
-                matchFound = true; // Set the flag if a match is found
+                $(this).show();
+                matchFound = true;
             } else {
-                $(this).hide(); // Hide rows that don't match
+                $(this).hide();
             }
         });
 
-        // Display an error message if no match is found
         if (!matchFound) {
-            $("#errorMessage").text("Delivery not found. Please verify the Delivery ID.");
-            $("#errorMessage").show(); // Show the error message
+            $("#errorMessage").text("Delivery not found. Please verify the Delivery ID.").show();
         } else {
-            $("#errorMessage").hide(); // Hide the error message if a match is found
+            $("#errorMessage").hide();
         }
     });
 
-    // Trigger search on Enter keypress
     $("#searchDelivery").on("keypress", function (e) {
         if (e.which === 13) {
             $("#searchButton").click();
         }
     });
 
-    // Clear search functionality
     $("#clearSearchButton").on("click", function () {
-        $("#searchDelivery").val(""); // Clear the input field
-        $("#errorMessage").hide(); // Hide the error message
-        $("tbody#deliveryListTableBody tr").show(); // Show all rows
+        $("#searchDelivery").val("");
+        $("#errorMessage").hide();
+        $("tbody#deliveryListTableBody tr").show();
     });
 
-    // Event listener for driver dropdown change
+    // Driver details update on driver selection
     $(".driver-dropdown").on("change", function () {
         const deliveryId = $(this).data("delivery-id");
         const driverId = $(this).val();
 
         if (driverId) {
-            // Send AJAX request to get driver details
-            $.post("../controller/deliverycontroller.php", 
+            $.post("../controller/deliverycontroller.php",
                 { action: "getDriverDetails", driverId: driverId },
                 function (response) {
                     if (response) {
-                        // Update the driver name and contact fields
                         $(`#driverName_${deliveryId}`).text(response.drivers_name);
                         $(`#driverContact_${deliveryId}`).text(response.drivers_contact_no);
                     } else {
-                        alert("Failed to fetch driver details. Please try again.");
+                        alert("Failed to fetch driver details.");
                     }
                 },
                 "json"
             ).fail(function () {
-                alert("Failed to fetch driver details. Please try again.");
+                alert("Failed to fetch driver details.");
             });
         } else {
-            // Clear the driver name and contact fields if no driver is selected
             $(`#driverName_${deliveryId}`).text('N/A');
             $(`#driverContact_${deliveryId}`).text('N/A');
         }

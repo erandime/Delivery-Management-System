@@ -6,6 +6,7 @@ if (!isset($_SESSION['user'])) {
     exit();
 }
 ?>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -16,6 +17,7 @@ if (!isset($_SESSION['user'])) {
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"> 
 </head>
 <body>
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
             <a class="navbar-brand">Delivery List</a>
@@ -35,7 +37,7 @@ if (!isset($_SESSION['user'])) {
                     </li>
                 </ul>
                 <div class="d-flex align-items-center">
-                    <span class="welcome-text me-3">Welcome, <?php echo $_SESSION["user"]["user_name"];?></span>
+                    <span class="welcome-text me-3">Welcome, <?php echo $_SESSION["user"]["user_name"]; ?></span>
                     <a href="../controller/logincontroller.php?status=logout" class="btn btn-outline-light btn-sm">
                         <i class="fas fa-sign-out-alt me-2"></i>Logout
                     </a>
@@ -44,6 +46,7 @@ if (!isset($_SESSION['user'])) {
         </div>
     </nav>
 
+    <!-- Main Content -->
     <div class="container mt-5">
         <h3 class="text-center mb-4">Delivery List</h3>
 
@@ -75,15 +78,14 @@ if (!isset($_SESSION['user'])) {
             </div>
 
             <!-- Search -->
-<div class="col-md-4">
-    <div class="d-flex justify-content-end">
-        <input type="text" id="searchDelivery" class="form-control form-control-sm me-2" placeholder="Search by Delivery ID">
-        <button class="btn btn-primary btn-sm" id="searchButton">Search</button>
-        <button class="btn btn-secondary btn-sm ms-2" id="clearSearchButton">Clear</button>
-    </div>
-    <div id="errorMessage" class="text-danger mt-2" style="display: none;">Error message placeholder</div>
-</div>
-
+            <div class="col-md-4">
+                <div class="d-flex justify-content-end">
+                    <input type="text" id="searchDelivery" class="form-control form-control-sm me-2" placeholder="Search by Delivery ID">
+                    <button class="btn btn-primary btn-sm" id="searchButton">Search</button>
+                    <button class="btn btn-secondary btn-sm ms-2" id="clearSearchButton">Clear</button>
+                </div>
+                <div id="errorMessage" class="text-danger mt-2" style="display: none;">Error message placeholder</div>
+            </div>
         </div>
 
         <!-- Delivery Table -->
@@ -103,58 +105,50 @@ if (!isset($_SESSION['user'])) {
                     </tr>
                 </thead>
                 <tbody id="deliveryListTableBody">
-    <?php while ($row = $deliveries->fetch_assoc()) { 
-        $isCompleted = $row['delivery_status'] === 'Completed'; 
-        $isInTransit = $row['delivery_status'] === 'In Transit';
-    ?>
-        <tr>
-            <td><?php echo $row['delivery_id']; ?></td>
-            <td><?php echo $row['delivery_address']; ?></td>
-            <td><?php echo $row['delivery_status']; ?></td>
-            <td><?php echo $row['delivery_schedule']; ?></td>
-            <td>
-                <select 
-                    class="form-select form-select-sm driver-dropdown" 
-                    data-delivery-id="<?php echo $row['delivery_id']; ?>" 
-                    id="driverDropdown_<?php echo $row['delivery_id']; ?>" 
-                    name="driver_id_<?php echo $row['delivery_id']; ?>"
-                >
-                    <option value="">Select Driver</option>
-                    <?php foreach ($drivers as $driver) { ?>
-                        <option value="<?php echo $driver['drivers_id']; ?>" 
-                            <?php echo $row['delivery_driver_id'] == $driver['drivers_id'] ? 'selected' : ''; ?>
-                        >
-                            <?php echo $driver['drivers_id']; ?>
-                        </option>
+                    <?php while ($row = $deliveries->fetch_assoc()) { 
+                        $isCompleted = $row['delivery_status'] === 'Completed'; 
+                        $isInTransit = $row['delivery_status'] === 'In Transit';
+                    ?>
+                    <tr data-delivery-id="<?php echo $row['delivery_id']; ?>">
+                        <td><?php echo $row['delivery_id']; ?></td>
+                        <td><?php echo $row['delivery_address']; ?></td>
+                        <td class="status-column"><?php echo $row['delivery_status']; ?></td>
+                        <td><?php echo $row['delivery_schedule']; ?></td>
+                        <td>
+                            <select class="form-select form-select-sm driver-dropdown" data-delivery-id="<?php echo $row['delivery_id']; ?>">
+                                <option value="">Select Driver</option>
+                                <?php foreach ($drivers as $driver) { ?>
+                                    <option value="<?php echo $driver['drivers_id']; ?>" 
+                                        <?php echo $row['delivery_driver_id'] == $driver['drivers_id'] ? 'selected' : ''; ?>>
+                                        <?php echo $driver['drivers_id']; ?>
+                                    </option>
+                                <?php } ?>
+                            </select>
+                        </td>
+                        <td id="driverName_<?php echo $row['delivery_id']; ?>"><?php echo $row['drivers_name'] ?? 'N/A'; ?></td>
+                        <td id="driverContact_<?php echo $row['delivery_id']; ?>"><?php echo $row['drivers_contact_no'] ?? 'N/A'; ?></td>
+                        <td><?php echo $row['orders_id']; ?></td>
+                        <td>
+                            <button class="btn btn-primary btn-sm save-driver" data-delivery-id="<?php echo $row['delivery_id']; ?>" 
+                                <?php echo ($isCompleted || $isInTransit) ? 'disabled' : ''; ?>>
+                                Save
+                            </button>
+                        </td>
+                    </tr>
                     <?php } ?>
-                </select>
-            </td>
-            <td id="driverName_<?php echo $row['delivery_id']; ?>"><?php echo $row['drivers_name'] ?? 'N/A'; ?></td>
-            <td id="driverContact_<?php echo $row['delivery_id']; ?>"><?php echo $row['drivers_contact_no'] ?? 'N/A'; ?></td>
-            <td><?php echo $row['orders_id']; ?></td>
-            <td>
-                <button 
-                    class="btn btn-primary btn-sm save-driver" 
-                    data-delivery-id="<?php echo $row['delivery_id']; ?>" 
-                    <?php echo $isCompleted ? 'disabled' : ''; ?>
-                    <?php echo $isInTransit ? 'disabled' : ''; ?>
-                >
-                    Save
-                </button>
-            </td>
-        </tr>
-    <?php } ?>
-</tbody>
+                </tbody>
             </table>
         </div>
     </div>
 
+    <!-- Footer -->
     <footer class="footer mt-auto py-3 bg-light">
         <div class="container text-center">
             <span class="text-muted">© 2025 Dispatcher System. All Rights Reserved.</span>
         </div>
     </footer>
 
+    <!-- Scripts -->
     <script src="../bootstrap/js/jquery-3.7.1.min.js"></script>
     <script src="../bootstrap/js/bootstrap.min.js"></script>
     <script src="../js/scripts.js"></script>
