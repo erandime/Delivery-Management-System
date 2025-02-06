@@ -2,7 +2,7 @@ Delivery Management System
 
 This is a Delivery Management System designed to automate and optimize delivery assignment and tracking for dispatchers. 
 
-Project_Structure
+### **Project Structure**
 
 ├── 01_src/                     # Main source code  
 │   ├── commons/                # Database connection  
@@ -17,7 +17,7 @@ Project_Structure
 │   ├── selenium/               # Selenium scripts for automated integration testing  
 ├── 03_docs/                    # Documentation folder  
 │   ├── 01_UML_diagrams/        # Contains UML diagrams  
-│   ├── 02_tests/               # Includes test cases and results  
+│   ├── 02_tests/               # Includes test cases and results log
 │   ├── 03_UI_design_canva/     # UI design created using Canva  
 │   ├── transcript/             # Project transcript  
 │   ├── Use_case_1.1_description/  # Detailed description of use case  
@@ -28,8 +28,9 @@ Project_Structure
 ├── index.php                   # Entry point of the application  
 ├── .gitignore                  # Git ignored files and folders  
  
+## UI Design
+Here is a preview of the UI for the application:
 
-
-![Alt text](03_docs/03_UI_design_canva/UI/homepage.png)
-![Alt text](03_docs/03_UI_design_canva/UI/deliverylist.png)
+![homepage](03_docs/03_UI_design_canva/UI/homepage.png)
+![deliverylist](03_docs/03_UI_design_canva/UI/deliverylist.png)
 
