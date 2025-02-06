@@ -56,7 +56,7 @@ $(document).ready(function () {
             },
             "json"
         ).fail(function () {
-            alert("An error occurred. Please try again later.");
+            alert("An error occurred. Please try again later or Contact Support.");
         });
     });
 
