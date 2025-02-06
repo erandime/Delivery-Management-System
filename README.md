@@ -36,40 +36,35 @@ Here is a preview of the UI for the application:<br/>
 
 ## How to Clone and Run the Application
 
-### Step 1: Clone the Repository  
+Step 1: Clone the Repository  
 Open a terminal and run the following command:  
 ```sh
 git clone https://github.com/erandime/Delivery-Management-System.git
+
 Step 2: Navigate to the Project Directory
-sh
-Copy
-Edit
 cd Delivery-Management-System
+
 Step 3: Install Dependencies
-sh
-Copy
-Edit
 composer install
+
 Step 4: Start XAMPP Services
 Start Apache and MySQL services.
 
 Step 5: Set Up the Database
 Open phpMyAdmin (http://localhost/phpmyadmin/).
-Create a new database:
-Database Name: msc_sdp_delivery_mgt_cb015490
+Create a new database: msc_sdp_delivery_mgt_cb015490
 Import the Database.sql file from 03_docs/ into your MySQL or MariaDB server.
 Ensure 01_src/commons/db_connection.php contains the correct credentials.
-Step 6: Run the Application
-sh
-Copy
-Edit
+
+Step 6:Run the Application
 php -S localhost:8000 -t .
+
 Then open http://localhost:8000 in your browser.
 
 Prerequisites
 Before proceeding, ensure you have the following installed:
 
-Git
-PHP 8.0+
-Composer
-XAMPP (Apache & MySQL)
+- **Git** 
+- **PHP 8.0+** 
+- **Composer** 
+- **XAMPP (Apache & MySQL)** 
