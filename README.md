@@ -1,8 +1,9 @@
 Delivery Management System
 
-This is a PHP-based Delivery Management System designed to automate and optimize delivery assignment and tracking for dispatchers. The system replaces manual spreadsheet-based tracking with a structured, real-time approach to ensure operational efficiency and improve customer satisfaction.
+This is a Delivery Management System designed to automate and optimize delivery assignment and tracking for dispatchers. 
 
-/Project_Root
+Project_Structure
+
 ├── 01_src/                     # Main source code  
 │   ├── commons/                # Database connection  
 │   ├── controller/             # Business logic controllers  
