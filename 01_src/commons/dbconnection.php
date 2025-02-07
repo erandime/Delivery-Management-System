@@ -17,7 +17,7 @@ class dbConnection {
         if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
         } else {
-            $GLOBALS["con"] = $this->conn;
+            $GLOBALS["con"] = $this->conn;  // Stores the connection in $GLOBALS["con"} for global access
         }
     }
 }

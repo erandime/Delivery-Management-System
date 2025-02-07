@@ -5,7 +5,7 @@ class DeliveryController {
     private $deliveryModel;
 
     public function __construct() {
-        $this->deliveryModel = new DeliveryModel();
+        $this->deliveryModel = new DeliveryModel(); //creates an instance of deliverymodel
     }
 
     public function getDeliveries() {
@@ -16,15 +16,16 @@ class DeliveryController {
         return $this->deliveryModel->getAvailableDrivers();
     }
 
+    //Assigns a driver, restore previous driver's quota, updates database
     public function assignDriver($deliveryId, $newDriverId) {
-        $con = $GLOBALS['con']; // Database connection
+        $con = $GLOBALS['con']; // Use global database connection
         $dispatcherId = 1; // Current dispatcher ID (can also be set from session if needed)
 
-        // Start transaction
-        $con->begin_transaction();
+     
+        $con->begin_transaction();// begin transaction to ensure all changes happen together
 
         try {
-            // Fetch the currently assigned driver
+            // Fetch the currently assigned driver's id
             $stmt = $con->prepare("SELECT delivery_driver_id FROM delivery WHERE delivery_id = ?");
             $stmt->bind_param("i", $deliveryId);
             $stmt->execute();
@@ -66,7 +67,7 @@ class DeliveryController {
 
             // Commit transaction
             $con->commit();
-
+            //return success message
             return ['success' => true, 'message' => "Driver assigned successfully, and driver's daily quota updated."];
         } catch (Exception $e) {
             // Rollback transaction on failure
@@ -95,7 +96,7 @@ $deliveryController = new DeliveryController();
 $deliveries = $deliveryController->getDeliveries();
 $drivers = $deliveryController->getAvailableDrivers();
 
-// Handle AJAX POST request
+// Process assignDriver requests from the FE-Handle AJAX POST request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['action'])) {
         switch ($_POST['action']) {
@@ -104,7 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $driverId = intval($_POST['driverId']);
                 $response = $deliveryController->assignDriver($deliveryId, $driverId);
                 header('Content-Type: application/json');
-                echo json_encode($response);
+                echo json_encode($response); //return json response to the FE
                 exit();
 
             case 'getDriverDetails':

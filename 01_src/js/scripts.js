@@ -30,15 +30,15 @@ $(document).ready(function () {
 
     // Save driver functionality with dynamic status update
     $(".save-driver").on("click", function () {
-        const deliveryId = $(this).data("delivery-id");
-        const selectedDriverId = $(`.driver-dropdown[data-delivery-id="${deliveryId}"]`).val();
+        const deliveryId = $(this).data("delivery-id"); //extract delivery ID
+        const selectedDriverId = $(`.driver-dropdown[data-delivery-id="${deliveryId}"]`).val(); //get the selected driver
 
         if (!selectedDriverId) {
             alert("Please select a driver.");
             return;
         }
 
-        // Send AJAX request to assign the driver
+        // Send AJAX request to deliverycontroller to assign the driver
         $.post("../controller/deliverycontroller.php",
             { action: "assignDriver", deliveryId, driverId: selectedDriverId },
             function (response) {
@@ -56,7 +56,7 @@ $(document).ready(function () {
             },
             "json"
         ).fail(function () {
-            alert("An error occurred. Please try again later or Contact Support.");
+            alert("An error occurred. Please try again later or Contact Support."); //If AJAX request fails (server/network issue), display alert messgae
         });
     });
 
@@ -136,7 +136,7 @@ $(document).ready(function () {
     $(".driver-dropdown").on("change", function () {
         const deliveryId = $(this).data("delivery-id");
         const driverId = $(this).val();
-
+        //Send AJAX request to get driver details
         if (driverId) {
             $.post("../controller/deliverycontroller.php",
                 { action: "getDriverDetails", driverId: driverId },

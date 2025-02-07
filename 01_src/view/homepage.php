@@ -1,7 +1,7 @@
 <?php
 session_start();
 if (!isset($_SESSION['user'])) {
-    header("Location: login.php");//Start session, End session if user is not logged in -> Redirect to login
+    header("Location: login.php");//if user is not logged in -> Redirect to login
     exit();
 }
 ?> 
@@ -45,7 +45,7 @@ if (!isset($_SESSION['user'])) {
                 <!--Welcome, Username, Logout -->
                 <div class="d-flex align-items-center">
                     <span class="welcome-text me-3">Welcome, <?php echo $_SESSION["user"]["user_name"];?></span>     <!--Display current users name next to Welcome -->
-                    <a href="../controller/logincontroller.php?status=logout" class="btn btn-outline-light btn-sm">
+                    <a href="../controller/logincontroller.php?status=logout" class="btn btn-outline-light btn-sm"> <!-- Handles logout -->
                         <i class="fas fa-sign-out-alt me-2"></i>Logout
                     </a>
                 </div>

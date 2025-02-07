@@ -105,21 +105,21 @@ if (!isset($_SESSION['user'])) {
                     </tr>
                 </thead>
                 <tbody id="deliveryListTableBody">
-                    <?php while ($row = $deliveries->fetch_assoc()) { 
-                        $isCompleted = $row['delivery_status'] === 'Completed'; 
+                    <?php while ($row = $deliveries->fetch_assoc()) { //Loops through deliveries
+                        $isCompleted = $row['delivery_status'] === 'Completed'; //extract delivery status to determine if delivery is completed
                         $isInTransit = $row['delivery_status'] === 'In Transit';
-                    ?>
-                    <tr data-delivery-id="<?php echo $row['delivery_id']; ?>">
-                        <td><?php echo $row['delivery_id']; ?></td>
+                    ?> 
+                    <tr data-delivery-id="<?php echo $row['delivery_id']; ?>"> 
+                        <td><?php echo $row['delivery_id']; ?></td> 
                         <td><?php echo $row['delivery_address']; ?></td>
                         <td class="status-column"><?php echo $row['delivery_status']; ?></td>
                         <td><?php echo $row['delivery_schedule']; ?></td>
-                        <td>
+                        <td> 
                             <select class="form-select form-select-sm driver-dropdown" data-delivery-id="<?php echo $row['delivery_id']; ?>">
                                 <option value="">Select Driver</option>
                                 <?php foreach ($drivers as $driver) { ?>
                                     <option value="<?php echo $driver['drivers_id']; ?>" 
-                                        <?php echo $row['delivery_driver_id'] == $driver['drivers_id'] ? 'selected' : ''; ?>>
+                                        <?php echo $row['delivery_driver_id'] == $driver['drivers_id'] ? 'selected' : ''; ?>> 
                                         <?php echo $driver['drivers_id']; ?>
                                     </option>
                                 <?php } ?>
@@ -130,7 +130,7 @@ if (!isset($_SESSION['user'])) {
                         <td><?php echo $row['orders_id']; ?></td>
                         <td>
                             <button class="btn btn-primary btn-sm save-driver" data-delivery-id="<?php echo $row['delivery_id']; ?>" 
-                                <?php echo ($isCompleted || $isInTransit) ? 'disabled' : ''; ?>>
+                                <?php echo ($isCompleted || $isInTransit) ? 'disabled' : ''; ?>> 
                                 Save
                             </button>
                         </td>

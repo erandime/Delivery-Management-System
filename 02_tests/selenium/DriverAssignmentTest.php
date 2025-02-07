@@ -13,7 +13,7 @@ class DriverAssignmentTest {
     public function setUp(): void {
         $this->driver = RemoteWebDriver::create(
             'http://localhost:9515',
-            DesiredCapabilities::chrome()
+            DesiredCapabilities::chrome() //Launches chrome via selenium
         );
 
         // Step 1: Log in to the system

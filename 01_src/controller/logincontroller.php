@@ -7,12 +7,12 @@
     }
     
     include '../model/loginmodel.php';
-    $loginObj = new login(); //Create new login object
+    $loginObj = new login();
     
     $status = $_GET["status"];
     switch($status) {
        case "login": 
-           // Sanitize user inputs to prevent SQL injection and XSS
+           // Sanitize user inputs to prevent XSS
         $username = htmlspecialchars(trim($_POST["username"]), ENT_QUOTES, 'UTF-8');
         $password = htmlspecialchars(trim($_POST["password"]), ENT_QUOTES, 'UTF-8');
            
@@ -27,10 +27,10 @@
                $loginResult = $loginObj->validateLogin($username, $password); // Validate Credentials
                
                if($loginResult->num_rows>0) {
-//                   echo "Login Successful";
+
                    $userRow = $loginResult->fetch_assoc();      //Convert user record into an associative array
                    $_SESSION["user"] = $userRow;        //Create session for the logged user
-//                   print_r($_SESSION["user"]);  
+
                    ?> <script>window.location="../view/homepage.php"</script>
                    <?php        //Upon successful login direct to Homepage
                    

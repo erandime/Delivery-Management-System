@@ -37,10 +37,6 @@
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
                     </div>
-<!--                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="rememberMe">
-                        <label class="form-check-label" for="rememberMe">Remember Me</label>
-                    </div>-->
                     <button type="submit" class="btn btn-primary btn-lg">Login</button>
                 </form>
             </div>
@@ -48,7 +44,6 @@
     </div>
     
     <script src="../bootstrap/js/jquery-3.7.1.min.js"></script>
-    <script src="../bootstrap/js/bootstrap.min.js"></script>
-    <!--<script src="../js/loginvalidation.js"></script>-->        
+    <script src="../bootstrap/js/bootstrap.min.js"></script>     
 </body>
 </html>
