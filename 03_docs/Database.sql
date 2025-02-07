@@ -90,7 +90,7 @@ INSERT INTO `delivery` (`delivery_id`, `delivery_address`, `delivery_status`, `d
 (16, 'No 8 Willow Court', 'Ready to Dispatch', '2025-02-13', NULL, 16, NULL, NULL),
 (17, 'No 7 Birch Way', 'Ready to Dispatch', '2025-02-13', NULL, 17, NULL, NULL),
 (18, 'No 5 Cedar Boulevard', 'Driver Assigned', '2025-02-13', 7, 18, NULL, 1),
-(19, 'No 4 Pine Lane', 'Ready to Dispatch', '2025-02-09', NULL, 19, NULL, NULL),
+(19, 'No 4 Pine Lane', 'Ready to Dispatch', '2025-02-13', NULL, 19, NULL, NULL),
 (20, 'No 1, Maple Street', 'Completed', '2025-02-09', 8, 20, NULL, 1);
 
 -- --------------------------------------------------------
@@ -112,13 +112,13 @@ CREATE TABLE `drivers` (
 --
 
 INSERT INTO `drivers` (`drivers_id`, `drivers_name`, `drivers_availability`, `drivers_daily_quota`, `drivers_contact_no`) VALUES
-(1, 'Paul', 1, 10, '+44 7123 456789'),
-(2, 'John', 1, 8, '+44 7456 789012'),
+(1, 'Paul', 1, 9, '+44 7123 456789'),
+(2, 'John', 1, 10, '+44 7456 789012'),
 (3, 'Zhang', 1, 1, '+44 7901 234567'),
 (4, 'Raj', 0, 6, '+44 7532 456789'),
 (5, 'Jessica', 1, 0, '+44 7700 900123'),
 (6, 'Kim', 1, 9, '+44 7421 987654'),
-(7, 'Sarah', 1, 10, '+44 7954 321098'),
+(7, 'Sarah', 1, 7, '+44 7954 321098'),
 (8, 'Amit', 1, 5, '+44 7711 223344'),
 (9, 'Chen', 1, 9, '+44 7812 345678'),
 (10, 'Michael', 1, 7, '+44 7377 889900');
