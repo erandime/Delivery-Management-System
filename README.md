@@ -53,8 +53,8 @@ Start Apache and MySQL services.
 
 5. Set Up the Database
 Open phpMyAdmin (http://localhost/phpmyadmin/).
-Create a new database: msc_sdp_delivery_mgt_cb015490
-Import the Database.sql file from 03_docs/ into your MySQL or MariaDB server.
+Create a new database: msc_sdp_delivery_mgt_cb015490.
+Import the Database.sql file from 03_docs/ into your MariaDB server.
 Ensure 01_src/commons/db_connection.php contains the correct credentials.
 
 6. Run the Application
