@@ -26,10 +26,9 @@ This is a PHP-based Delivery Management System designed to automate and optimize
 ├── composer.json               &ensp;# Composer dependency configuration  
 ├── phpunit.xml                 &ensp;# PHPUnit configuration file  
 ├── index.php                   &ensp;# Entry point of the application  
-├── .gitignore                  &ensp;# Git ignored files and folders  
  
 ## UI Design
-Here is a preview of the UI for the application:<br/>
+Preview of the UI for the application:<br/>
 
 ![homepage](03_docs/03_UI_design_canva/UI/homepage.png)
 ![deliverylist](03_docs/03_UI_design_canva/UI/deliverylist.png)
